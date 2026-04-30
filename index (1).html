@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+  <title>Happy Birthday 🎀</title>
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#ff4d79"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+  <meta name="apple-mobile-web-app-title" content="Birthday 💖"/>
+  <link rel="apple-touch-icon" href="icons/icon-192.png"/>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Dancing+Script:wght@500;700&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- Shooting stars + hearts canvas -->
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- ══════════════════════════════════════
+       HERO SECTION
+  ══════════════════════════════════════ -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <p class="pre-title">✨ Today is a very special day ✨</p>
+      <h1 class="birthday-title">Happy Birthday<br><span class="name-glow" id="heroName">My Dearest</span> 💖</h1>
+      <p class="subtitle" id="typingText"></p>
+      <!-- Time Together Counter -->
+      <div class="together-counter reveal-fast" id="togetherCounter">
+        <div class="counter-label">Together for</div>
+        <div class="counter-row">
+          <div class="counter-unit"><span id="cYears">0</span><small>yrs</small></div>
+          <div class="counter-sep">·</div>
+          <div class="counter-unit"><span id="cMonths">0</span><small>mo</small></div>
+          <div class="counter-sep">·</div>
+          <div class="counter-unit"><span id="cDays">0</span><small>days</small></div>
+          <div class="counter-sep">·</div>
+          <div class="counter-unit"><span id="cHours">0</span><small>hrs</small></div>
+          <div class="counter-sep">·</div>
+          <div class="counter-unit"><span id="cMins">0</span><small>min</small></div>
+          <div class="counter-sep">·</div>
+          <div class="counter-unit"><span id="cSecs">0</span><small>sec</small></div>
+        </div>
+      </div>
+      <div class="scroll-hint">
+        <span>Scroll to explore</span>
+        <div class="scroll-arrow">↓</div>
+      </div>
+    </div>
+    <div class="petal-overlay"></div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       LOVE LETTER ENVELOPE (Tier 1 #2)
+  ══════════════════════════════════════ -->
+  <section class="letter-section" id="letterSection">
+    <h2 class="section-title reveal">A Letter From My Heart 💌</h2>
+    <p class="section-subtitle reveal">Tap the envelope to open it</p>
+    <div class="envelope-wrapper reveal" id="envelopeWrapper">
+      <div class="envelope" id="envelope">
+        <div class="env-flap" id="envFlap"></div>
+        <div class="env-body">
+          <div class="env-heart">💌</div>
+          <div class="env-tap-hint">tap to open</div>
+        </div>
+        <div class="env-bottom-l"></div>
+        <div class="env-bottom-r"></div>
+      </div>
+      <!-- Letter that unfolds -->
+      <div class="letter-paper" id="letterPaper">
+        <div class="letter-inner">
+          <div class="letter-stamp">💖</div>
+          <p class="letter-date" id="letterDate"></p>
+          <h3>My Dearest,</h3>
+          <p>On this beautiful day, I want the whole world to know how incredibly special you are. You light up every room you walk into, and every moment with you feels like magic.</p>
+          <p>Your laughter is my favourite sound, your smile is my favourite sight, and you are the greatest gift life has ever given me. Here's to you — radiant, wonderful, irreplaceable you. 🌸</p>
+          <p>No words could ever fully capture what you mean to me. So I'm not going to try — I'll just spend every day showing you instead. 💕</p>
+          <p class="letter-sig">— With all my love, always 💝</p>
+          <div class="letter-doodles">♡ ✦ ♡ ✦ ♡</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       BIRTHDAY CAKE (Tier 1 #1)
+  ══════════════════════════════════════ -->
+  <section class="cake-section" id="cakeSection">
+    <h2 class="section-title reveal">Make a Wish! 🎂</h2>
+    <p class="section-subtitle reveal" id="cakeSubtitle">Tap the candles to blow them out ✨</p>
+    <div class="cake-wrapper reveal" id="cakeWrapper">
+      <!-- Candles -->
+      <div class="candles-row" id="candlesRow">
+        <div class="candle-unit" data-index="0">
+          <div class="flame" id="flame0"><div class="flame-inner"></div></div>
+          <div class="candle-body cb1"></div>
+        </div>
+        <div class="candle-unit" data-index="1">
+          <div class="flame" id="flame1"><div class="flame-inner"></div></div>
+          <div class="candle-body cb2"></div>
+        </div>
+        <div class="candle-unit" data-index="2">
+          <div class="flame" id="flame2"><div class="flame-inner"></div></div>
+          <div class="candle-body cb3"></div>
+        </div>
+        <div class="candle-unit" data-index="3">
+          <div class="flame" id="flame3"><div class="flame-inner"></div></div>
+          <div class="candle-body cb1"></div>
+        </div>
+        <div class="candle-unit" data-index="4">
+          <div class="flame" id="flame4"><div class="flame-inner"></div></div>
+          <div class="candle-body cb2"></div>
+        </div>
+      </div>
+      <!-- Cake tiers -->
+      <div class="cake-top-tier">
+        <div class="cake-deco-top">🌸 💖 🌸</div>
+      </div>
+      <div class="cake-mid-tier">
+        <div class="cake-deco-mid">✦ Happy Birthday ✦</div>
+      </div>
+      <div class="cake-bot-tier">
+        <div class="cake-deco-bot">🍓 🌷 🍓 🌷 🍓</div>
+      </div>
+      <div class="cake-plate"></div>
+    </div>
+    <div class="wish-made-msg" id="wishMadeMsg">
+      <div class="wish-made-inner">
+        <div class="wish-made-icon">🌟</div>
+        <h3>Your wish has been made!</h3>
+        <p>May every dream come true this year 💖</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       MEMORY CARDS — VERTICAL ROPE
+  ══════════════════════════════════════ -->
+  <section class="memories-section" id="memories">
+    <h2 class="section-title reveal">Our Precious Memories 📸</h2>
+    <p class="section-subtitle reveal">Every picture tells a story worth a thousand smiles</p>
+    <div class="rope-timeline">
+      <div class="rope-center-line"></div>
+
+      <div class="rope-row rope-left reveal-rope" data-delay="0">
+        <div class="card-side">
+          <div class="memory-card swing-card" onclick="openLightbox(0)">
+            <div class="card-pin">📌</div>
+            <div class="card-img-wrap"><div class="card-placeholder c1"><span class="card-emoji">🌸</span><span class="card-mem-label">Memory 1</span></div></div>
+            <p class="card-caption">The day we laughed till we cried 💕</p>
+          </div>
+        </div>
+        <div class="rope-connector-col"><div class="rope-knot">🎀</div><div class="rope-horiz"></div><div class="rope-node"></div></div>
+        <div class="spacer-side"></div>
+      </div>
+
+      <div class="rope-row rope-right reveal-rope" data-delay="200">
+        <div class="spacer-side"></div>
+        <div class="rope-connector-col"><div class="rope-node"></div><div class="rope-horiz"></div><div class="rope-knot">🎀</div></div>
+        <div class="card-side">
+          <div class="memory-card swing-card" onclick="openLightbox(1)">
+            <div class="card-pin">📌</div>
+            <div class="card-img-wrap"><div class="card-placeholder c2"><span class="card-emoji">🌼</span><span class="card-mem-label">Memory 2</span></div></div>
+            <p class="card-caption">Our secret little adventures 🌟</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rope-row rope-left reveal-rope" data-delay="400">
+        <div class="card-side">
+          <div class="memory-card swing-card" onclick="openLightbox(2)">
+            <div class="card-pin">📌</div>
+            <div class="card-img-wrap"><div class="card-placeholder c3"><span class="card-emoji">🦋</span><span class="card-mem-label">Memory 3</span></div></div>
+            <p class="card-caption">When everything felt perfect ✨</p>
+          </div>
+        </div>
+        <div class="rope-connector-col"><div class="rope-knot">🎀</div><div class="rope-horiz"></div><div class="rope-node"></div></div>
+        <div class="spacer-side"></div>
+      </div>
+
+      <div class="rope-row rope-right reveal-rope" data-delay="600">
+        <div class="spacer-side"></div>
+        <div class="rope-connector-col"><div class="rope-node"></div><div class="rope-horiz"></div><div class="rope-knot">🎀</div></div>
+        <div class="card-side">
+          <div class="memory-card swing-card" onclick="openLightbox(3)">
+            <div class="card-pin">📌</div>
+            <div class="card-img-wrap"><div class="card-placeholder c4"><span class="card-emoji">🌷</span><span class="card-mem-label">Memory 4</span></div></div>
+            <p class="card-caption">Side by side, always 💖</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rope-row rope-left reveal-rope" data-delay="800">
+        <div class="card-side">
+          <div class="memory-card swing-card" onclick="openLightbox(4)">
+            <div class="card-pin">📌</div>
+            <div class="card-img-wrap"><div class="card-placeholder c5"><span class="card-emoji">🍓</span><span class="card-mem-label">Memory 5</span></div></div>
+            <p class="card-caption">Sweet moments, sweeter you 🍰</p>
+          </div>
+        </div>
+        <div class="rope-connector-col"><div class="rope-knot">🎀</div><div class="rope-horiz"></div><div class="rope-node"></div></div>
+        <div class="spacer-side"></div>
+      </div>
+
+      <div class="rope-row rope-right reveal-rope" data-delay="1000">
+        <div class="spacer-side"></div>
+        <div class="rope-connector-col"><div class="rope-node"></div><div class="rope-horiz"></div><div class="rope-knot">🎀</div></div>
+        <div class="card-side">
+          <div class="memory-card swing-card" onclick="openLightbox(5)">
+            <div class="card-pin">📌</div>
+            <div class="card-img-wrap"><div class="card-placeholder c6"><span class="card-emoji">🌙</span><span class="card-mem-label">Memory 6</span></div></div>
+            <p class="card-caption">Late nights, forever stars ⭐</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rope-end-bow">🎀</div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX (Tier 2 #5) -->
+  <div class="lightbox-overlay" id="lightbox">
+    <button class="lb-close" id="lbClose">✕</button>
+    <button class="lb-nav lb-prev" id="lbPrev">❮</button>
+    <div class="lb-content">
+      <div class="lb-img-wrap" id="lbImgWrap"></div>
+      <p class="lb-caption" id="lbCaption"></p>
+    </div>
+    <button class="lb-nav lb-next" id="lbNext">❯</button>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       FLIP CARDS — REASONS I LOVE YOU (Tier 2 #2)
+  ══════════════════════════════════════ -->
+  <section class="flip-section" id="flipSection">
+    <h2 class="section-title reveal">Reasons I Love You 💝</h2>
+    <p class="section-subtitle reveal">Tap each card to reveal ✨</p>
+    <div class="flip-grid">
+      <div class="flip-card reveal" style="--delay:0.1s">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="flip-num">#1</span><span class="flip-tap">tap ♡</span></div>
+          <div class="flip-back"><p>Your smile can turn the worst day into the best one 😊</p></div>
+        </div>
+      </div>
+      <div class="flip-card reveal" style="--delay:0.15s">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="flip-num">#2</span><span class="flip-tap">tap ♡</span></div>
+          <div class="flip-back"><p>The way you laugh — I'd do anything to hear it 🎶</p></div>
+        </div>
+      </div>
+      <div class="flip-card reveal" style="--delay:0.2s">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="flip-num">#3</span><span class="flip-tap">tap ♡</span></div>
+          <div class="flip-back"><p>You make ordinary moments feel like magic ✨</p></div>
+        </div>
+      </div>
+      <div class="flip-card reveal" style="--delay:0.25s">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="flip-num">#4</span><span class="flip-tap">tap ♡</span></div>
+          <div class="flip-back"><p>How kind you are to everyone around you 🌸</p></div>
+        </div>
+      </div>
+      <div class="flip-card reveal" style="--delay:0.3s">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="flip-num">#5</span><span class="flip-tap">tap ♡</span></div>
+          <div class="flip-back"><p>You understand me without me saying a word 🌙</p></div>
+        </div>
+      </div>
+      <div class="flip-card reveal" style="--delay:0.35s">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="flip-num">#6</span><span class="flip-tap">tap ♡</span></div>
+          <div class="flip-back"><p>The way you care — wholeheartedly, always 💕</p></div>
+        </div>
+      </div>
+      <div class="flip-card reveal" style="--delay:0.4s">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="flip-num">#7</span><span class="flip-tap">tap ♡</span></div>
+          <div class="flip-back"><p>You make me want to be better every single day 🌟</p></div>
+        </div>
+      </div>
+      <div class="flip-card reveal" style="--delay:0.45s">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="flip-num">#8</span><span class="flip-tap">tap ♡</span></div>
+          <div class="flip-back"><p>Every single thing about you — I love all of it 💖</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       TIMELINE (Tier 2 #3)
+  ══════════════════════════════════════ -->
+  <section class="timeline-section" id="timelineSection">
+    <h2 class="section-title reveal">Our Story 🗓️</h2>
+    <p class="section-subtitle reveal">Every chapter written together</p>
+    <div class="story-timeline">
+      <div class="tl-line"></div>
+      <div class="tl-item tl-left reveal-rope" data-delay="0">
+        <div class="tl-dot">👋</div>
+        <div class="tl-card">
+          <div class="tl-date">Chapter 1</div>
+          <h4>We First Met</h4>
+          <p>The universe decided our paths should cross — and I'm so grateful it did 💫</p>
+        </div>
+      </div>
+      <div class="tl-item tl-right reveal-rope" data-delay="200">
+        <div class="tl-dot">🌸</div>
+        <div class="tl-card">
+          <div class="tl-date">Chapter 2</div>
+          <h4>First Date</h4>
+          <p>Nervous smiles, butterflies, and the moment I knew you were different 🌹</p>
+        </div>
+      </div>
+      <div class="tl-item tl-left reveal-rope" data-delay="400">
+        <div class="tl-dot">💖</div>
+        <div class="tl-card">
+          <div class="tl-date">Chapter 3</div>
+          <h4>I Fell For You</h4>
+          <p>Not all at once, but quietly, completely — the way sunsets happen 🌅</p>
+        </div>
+      </div>
+      <div class="tl-item tl-right reveal-rope" data-delay="600">
+        <div class="tl-dot">🎉</div>
+        <div class="tl-card">
+          <div class="tl-date">Chapter 4</div>
+          <h4>Adventures Together</h4>
+          <p>Every trip, every meal, every late night — all better with you 🌍</p>
+        </div>
+      </div>
+      <div class="tl-item tl-left reveal-rope" data-delay="800">
+        <div class="tl-dot">🌟</div>
+        <div class="tl-card">
+          <div class="tl-date">Today</div>
+          <h4>Your Birthday 🎂</h4>
+          <p>Celebrating the day the world got a little more beautiful 💕</p>
+        </div>
+      </div>
+      <div class="tl-item tl-right reveal-rope" data-delay="1000">
+        <div class="tl-dot">∞</div>
+        <div class="tl-card tl-card-special">
+          <div class="tl-date">Forever</div>
+          <h4>Every Day After</h4>
+          <p>More chapters to write, more memories to make — I can't wait 💝</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SURPRISE BOX (Tier 2 #5)
+  ══════════════════════════════════════ -->
+  <section class="giftbox-section" id="giftboxSection">
+    <h2 class="section-title reveal">A Special Surprise 🎁</h2>
+    <p class="section-subtitle reveal">Tap the gift to unwrap it</p>
+    <div class="giftbox-wrapper reveal">
+      <div class="giftbox" id="giftbox">
+        <div class="box-lid" id="boxLid">
+          <div class="lid-ribbon"></div>
+          <div class="lid-bow">🎀</div>
+        </div>
+        <div class="box-body">
+          <div class="box-ribbon-v"></div>
+          <div class="box-ribbon-h"></div>
+          <div class="box-shine"></div>
+        </div>
+      </div>
+      <div class="gift-message" id="giftMessage">
+        <div class="gift-msg-inner">
+          <div class="gift-msg-icon">💝</div>
+          <h3>You are my greatest adventure</h3>
+          <p>Every day I spend with you is a gift I never want to return. Thank you for being exactly who you are. I love you more than words could ever say. 💕</p>
+          <div class="gift-msg-stars">✨ 💖 ✨</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       KOREAN CARDS
+  ══════════════════════════════════════ -->
+  <section class="korean-section" id="korean">
+    <h2 class="section-title reveal">Little Love Notes 💝</h2>
+    <p class="section-subtitle reveal">From my heart, scattered just for you</p>
+    <div class="korean-grid">
+      <div class="k-card k-card-filled reveal" style="--delay:0.1s"><div class="k-doodles">♡ ✦ ♡</div><div class="k-icon">🎂</div><h3>Wishes</h3><p>May every single dream of yours bloom this year</p><div class="k-stars">⭐ ⭐ ⭐</div></div>
+      <div class="k-card k-card-outline reveal" style="--delay:0.2s"><div class="k-doodles">✿ ❀ ✿</div><div class="k-icon">🌸</div><h3>Beauty</h3><p>You are the prettiest kind of person — inside and out</p><div class="k-stars">♡ ♡ ♡</div></div>
+      <div class="k-card k-card-filled reveal" style="--delay:0.3s"><div class="k-doodles">☆ ★ ☆</div><div class="k-icon">💫</div><h3>Magic</h3><p>You make ordinary days feel like fairytales</p><div class="k-stars">✨ ✨ ✨</div></div>
+      <div class="k-card k-card-outline reveal" style="--delay:0.4s"><div class="k-doodles">♡ ˚ ♡</div><div class="k-icon">🎀</div><h3>Bond</h3><p>Our friendship is a ribbon I never want to untie</p><div class="k-stars">💖 💖 💖</div></div>
+      <div class="k-card k-card-filled reveal" style="--delay:0.5s"><div class="k-doodles">✦ ❋ ✦</div><div class="k-icon">🌙</div><h3>Dream</h3><p>Reach for the moon — you were made to shine</p><div class="k-stars">🌟 🌟 🌟</div></div>
+      <div class="k-card k-card-outline reveal" style="--delay:0.6s"><div class="k-doodles">♡ ◌ ♡</div><div class="k-icon">🎵</div><h3>Joy</h3><p>Your laughter is the best song I know by heart</p><div class="k-stars">🎶 🎶 🎶</div></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       DARK / LIGHT TOGGLE (Tier 2 #4)
+  ══════════════════════════════════════ -->
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+    <span id="themeIcon">🌙</span>
+  </button>
+
+  <!-- BALLOONS -->
+  <div class="balloons-container" id="balloons"></div>
+
+  <!-- CONFETTI CANVAS (Tier 2 #1) -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- ══════════════════════════════════════
+       DECORATED FABs
+  ══════════════════════════════════════ -->
+  <div class="float-buttons">
+    <div class="fab-wrapper">
+      <div class="fab-orbit-ring music-ring"></div>
+      <div class="fab-glow music-glow"></div>
+      <button class="fab music-fab" id="musicBtn">
+        <div class="fab-bg-circles"><span class="bg-c bc1"></span><span class="bg-c bc2"></span></div>
+        <div class="fab-icon-wrap">
+          <svg id="musicSVG" class="fab-svg" viewBox="0 0 24 24" fill="none"><path d="M9 18V5l12-2v13" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="18" r="3" stroke="white" stroke-width="2.2"/><circle cx="18" cy="16" r="3" stroke="white" stroke-width="2.2"/></svg>
+          <svg id="pauseSVG" class="fab-svg d-none" viewBox="0 0 24 24" fill="none"><rect x="6" y="4" width="4" height="16" rx="1.5" fill="white"/><rect x="14" y="4" width="4" height="16" rx="1.5" fill="white"/></svg>
+        </div>
+        <span class="fab-badge music-badge">♪</span>
+        <!-- Music visualizer bars -->
+        <div class="music-bars" id="musicBars">
+          <span class="bar b1"></span><span class="bar b2"></span><span class="bar b3"></span><span class="bar b4"></span><span class="bar b5"></span>
+        </div>
+      </button>
+      <span class="fab-label">Music</span>
+      <div class="fab-floaties"><span class="floaty f1">🎵</span><span class="floaty f2">♡</span><span class="floaty f3">✨</span><span class="floaty f4">🎶</span></div>
+    </div>
+    <div class="fab-wrapper">
+      <div class="fab-orbit-ring video-ring"></div>
+      <div class="fab-glow video-glow"></div>
+      <button class="fab video-fab" id="videoBtn">
+        <div class="fab-bg-circles"><span class="bg-c bc1"></span><span class="bg-c bc2"></span></div>
+        <div class="fab-icon-wrap">
+          <svg class="fab-svg" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="14" height="14" rx="2" stroke="white" stroke-width="2"/><path d="M16 9l6-3v12l-6-3V9z" stroke="white" stroke-width="2" stroke-linejoin="round"/></svg>
+        </div>
+        <span class="fab-badge video-badge">▶</span>
+      </button>
+      <span class="fab-label">Video</span>
+      <div class="fab-floaties"><span class="floaty f1">🎬</span><span class="floaty f2">💕</span><span class="floaty f3">🌸</span><span class="floaty f4">⭐</span></div>
+    </div>
+  </div>
+
+  <!-- VIDEO MODAL -->
+  <div class="modal-overlay" id="videoModal">
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-title-bar"><span class="mtb-deco">💖</span><span class="mtb-text">Your Special Video</span><span class="mtb-deco">💖</span></div>
+      <div class="modal-frame">
+        <div class="modal-inner">
+          <div class="video-placeholder">
+            <div class="play-circle"><svg viewBox="0 0 24 24" width="40" height="40"><polygon points="6,3 20,12 6,21" fill="#ff4d79"/></svg></div>
+            <p>Your Special Video</p>
+            <small>Add your video URL in script.js CONFIG</small>
+          </div>
+        </div>
+      </div>
+      <div class="modal-deco tl">💖</div><div class="modal-deco tr">✨</div><div class="modal-deco bl">🌸</div><div class="modal-deco br">💕</div>
+    </div>
+  </div>
+
+  <audio id="bgMusic" loop><source src="" type="audio/mpeg"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
