@@ -466,6 +466,133 @@
 
   <audio id="bgMusic" loop><source src="" type="audio/mpeg"></audio>
 
+  <!-- ══════════════════════════════════════
+       SMART INSTALL POPUP (PWA)
+  ══════════════════════════════════════ -->
+
+  <!-- Backdrop blur overlay -->
+  <div class="install-backdrop" id="installBackdrop"></div>
+
+  <!-- Main Install Popup -->
+  <div class="install-popup" id="installPopup">
+
+    <!-- Floating hearts decoration -->
+    <div class="ip-hearts">
+      <span class="ip-h h1">💖</span>
+      <span class="ip-h h2">✨</span>
+      <span class="ip-h h3">🌸</span>
+      <span class="ip-h h4">💕</span>
+    </div>
+
+    <!-- Close button -->
+    <button class="ip-close" id="ipClose">✕</button>
+
+    <!-- App icon -->
+    <div class="ip-icon-wrap">
+      <div class="ip-icon-ring"></div>
+      <div class="ip-icon">💖</div>
+      <div class="ip-icon-badge">NEW</div>
+    </div>
+
+    <!-- Title -->
+    <h2 class="ip-title">Add to Home Screen</h2>
+    <p class="ip-subtitle">Open this birthday surprise anytime<br>like a real app — no Play Store needed 🎀</p>
+
+    <!-- Timer bar -->
+    <div class="ip-timer-wrap" id="ipTimerWrap">
+      <div class="ip-timer-bar" id="ipTimerBar"></div>
+      <span class="ip-timer-text" id="ipTimerText">Opening in 5s...</span>
+    </div>
+
+    <!-- ANDROID instructions -->
+    <div class="ip-steps" id="androidSteps">
+      <div class="ip-step">
+        <div class="ip-step-num">1</div>
+        <div class="ip-step-info">
+          <strong>Tap the menu</strong>
+          <span>Three dots ⋮ at top-right of Chrome</span>
+        </div>
+        <div class="ip-step-icon">⋮</div>
+      </div>
+      <div class="ip-step">
+        <div class="ip-step-num">2</div>
+        <div class="ip-step-info">
+          <strong>Tap "Add to Home screen"</strong>
+          <span>Scroll down in the menu to find it</span>
+        </div>
+        <div class="ip-step-icon">🏠</div>
+      </div>
+      <div class="ip-step">
+        <div class="ip-step-num">3</div>
+        <div class="ip-step-info">
+          <strong>Tap "Add"</strong>
+          <span>The birthday app appears on your screen!</span>
+        </div>
+        <div class="ip-step-icon">✅</div>
+      </div>
+      <!-- Android native install button (shown when browser supports it) -->
+      <button class="ip-install-btn" id="androidInstallBtn" style="display:none">
+        <span class="ip-btn-icon">📲</span>
+        <span>Install App Now</span>
+        <span class="ip-btn-arrow">→</span>
+      </button>
+    </div>
+
+    <!-- IPHONE instructions -->
+    <div class="ip-steps" id="iphoneSteps" style="display:none">
+      <div class="ip-step">
+        <div class="ip-step-num">1</div>
+        <div class="ip-step-info">
+          <strong>Open in Safari</strong>
+          <span>Must use Safari browser on iPhone</span>
+        </div>
+        <div class="ip-step-icon">🧭</div>
+      </div>
+      <div class="ip-step">
+        <div class="ip-step-num">2</div>
+        <div class="ip-step-info">
+          <strong>Tap Share button</strong>
+          <span>The box with arrow ↑ at the bottom</span>
+        </div>
+        <div class="ip-step-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff4d79" stroke-width="2.5" stroke-linecap="round">
+            <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/>
+          </svg>
+        </div>
+      </div>
+      <div class="ip-step">
+        <div class="ip-step-num">3</div>
+        <div class="ip-step-info">
+          <strong>Tap "Add to Home Screen"</strong>
+          <span>Scroll down the share sheet to find it</span>
+        </div>
+        <div class="ip-step-icon">➕</div>
+      </div>
+      <div class="ip-step">
+        <div class="ip-step-num">4</div>
+        <div class="ip-step-info">
+          <strong>Tap "Add"</strong>
+          <span>💖 icon appears on your home screen!</span>
+        </div>
+        <div class="ip-step-icon">✅</div>
+      </div>
+    </div>
+
+    <!-- Footer note -->
+    <p class="ip-note" id="ipNote">
+      🔒 100% safe · No account needed · Works offline
+    </p>
+
+    <!-- Maybe later -->
+    <button class="ip-later" id="ipLater">Maybe later</button>
+
+  </div>
+
+  <!-- Already installed success toast -->
+  <div class="install-success" id="installSuccess">
+    <span>🎉</span> App installed! Open from your home screen 💖
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>

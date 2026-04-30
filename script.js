@@ -437,3 +437,147 @@ window.addEventListener('load',()=>{
 
 console.log('%c💖 Happy Birthday! 💖','color:#ff4d79;font-size:20px;font-weight:bold;');
 console.log('%cEdit CONFIG at top of script.js to personalize!','color:#ff9ebc;');
+
+// ══════════════════════════════════════════
+// SMART INSTALL POPUP
+// ══════════════════════════════════════════
+(function () {
+
+  const POPUP_DELAY    = 4000;   // ms before popup appears (4 seconds)
+  const TIMER_SECONDS  = 5;      // countdown shown inside popup
+  const DISMISSED_KEY  = 'bday_install_dismissed';
+
+  // Elements
+  const backdrop       = document.getElementById('installBackdrop');
+  const popup          = document.getElementById('installPopup');
+  const ipClose        = document.getElementById('ipClose');
+  const ipLater        = document.getElementById('ipLater');
+  const timerBar       = document.getElementById('ipTimerBar');
+  const timerText      = document.getElementById('ipTimerText');
+  const timerWrap      = document.getElementById('ipTimerWrap');
+  const androidSteps   = document.getElementById('androidSteps');
+  const iphoneSteps    = document.getElementById('iphoneSteps');
+  const androidBtn     = document.getElementById('androidInstallBtn');
+  const successToast   = document.getElementById('installSuccess');
+
+  // ── Detect device ────────────────────────
+  const ua        = navigator.userAgent;
+  const isIOS     = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+  const isAndroid = /Android/.test(ua);
+  const isMobile  = isIOS || isAndroid;
+  const isInPWA   = window.matchMedia('(display-mode: standalone)').matches
+                    || window.navigator.standalone === true;
+
+  // ── Already installed? hide everything ───
+  if (isInPWA) return;
+
+  // ── Already dismissed this session? ──────
+  if (sessionStorage.getItem(DISMISSED_KEY)) return;
+
+  // ── Show correct steps ───────────────────
+  if (isIOS) {
+    androidSteps.style.display = 'none';
+    iphoneSteps.style.display  = 'flex';
+    // add iPhone share arrow hint at bottom
+    const hint = document.createElement('div');
+    hint.className = 'iphone-arrow-hint';
+    hint.innerHTML = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ff4d79" stroke-width="2.5" stroke-linecap="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>`;
+    document.body.appendChild(hint);
+    setTimeout(() => hint.remove(), 12000);
+  } else {
+    androidSteps.style.display = 'flex';
+    iphoneSteps.style.display  = 'none';
+  }
+
+  // ── Android native install prompt ────────
+  let deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    // Show the one-tap install button
+    androidBtn.style.display = 'flex';
+    timerWrap.style.display  = 'none'; // hide timer — button is better
+  });
+
+  androidBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const result = await deferredPrompt.userChoice;
+    if (result.outcome === 'accepted') {
+      closePopup();
+      showSuccess();
+    }
+    deferredPrompt = null;
+  });
+
+  window.addEventListener('appinstalled', () => {
+    closePopup();
+    showSuccess();
+  });
+
+  // ── Countdown timer ───────────────────────
+  function startTimer() {
+    let remaining = TIMER_SECONDS;
+    timerBar.style.width = '100%';
+    timerText.textContent = `Showing steps in ${remaining}s...`;
+
+    const iv = setInterval(() => {
+      remaining--;
+      const pct = (remaining / TIMER_SECONDS) * 100;
+      timerBar.style.width = pct + '%';
+
+      if (remaining > 0) {
+        timerText.textContent = `Showing steps in ${remaining}s...`;
+      } else {
+        clearInterval(iv);
+        timerText.textContent = '👆 Follow the steps below!';
+        timerBar.style.width  = '0%';
+        // Pulse the first step
+        const first = popup.querySelector('.ip-step');
+        if (first) {
+          first.style.background = 'rgba(255,77,121,0.2)';
+          first.style.border     = '1.5px solid rgba(255,77,121,0.6)';
+          setTimeout(() => {
+            first.style.background = '';
+            first.style.border     = '';
+          }, 2000);
+        }
+      }
+    }, 1000);
+  }
+
+  // ── Open / Close ─────────────────────────
+  function openPopup() {
+    backdrop.classList.add('show');
+    popup.classList.add('show');
+    if (!deferredPrompt) startTimer(); // only countdown if no native button
+  }
+
+  function closePopup() {
+    backdrop.classList.remove('show');
+    popup.classList.remove('show');
+    sessionStorage.setItem(DISMISSED_KEY, '1');
+  }
+
+  function showSuccess() {
+    successToast.classList.add('show');
+    setTimeout(() => successToast.classList.remove('show'), 4000);
+  }
+
+  // ── Trigger after delay ───────────────────
+  setTimeout(openPopup, POPUP_DELAY);
+
+  // ── Close events ─────────────────────────
+  ipClose.addEventListener('click',    closePopup);
+  ipLater.addEventListener('click',    closePopup);
+  backdrop.addEventListener('click',   closePopup);
+
+  // Swipe down to dismiss on mobile
+  let touchStartY = 0;
+  popup.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
+  popup.addEventListener('touchend',   e => {
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (dy > 60) closePopup(); // swipe down 60px = dismiss
+  }, { passive: true });
+
+})();
